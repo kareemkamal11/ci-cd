@@ -1,0 +1,26 @@
+version: 2.1
+
+jobs:
+  system-info:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: Save system information to file
+          command: |
+            echo "==== System Information ====" > circleci-info.txt
+            uname -a >> circleci-info.txt
+            echo "" >> circleci-info.txt
+            echo "==== CPU Information ====" >> circleci-info.txt
+            lscpu >> circleci-info.txt
+            echo "" >> circleci-info.txt
+            echo "==== Memory Information ====" >> circleci-info.txt
+            free -h >> circleci-info.txt
+            echo "" >> circleci-info.txt
+            echo "==== Disk Space Information ====" >> circleci-info.txt
+            df -h >> circleci-info.txt
+      - persist_to_workspace:
+          root: .
+          paths:
+            - circleci-info.txt
