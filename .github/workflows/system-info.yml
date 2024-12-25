@@ -14,21 +14,16 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Save system information to file
+    - name: Show system information
       run: |
-        echo "==== System Information ====" > github-actions-info.txt
-        uname -a >> github-actions-info.txt
-        echo "" >> github-actions-info.txt
-        echo "==== CPU Information ====" >> github-actions-info.txt
-        lscpu >> github-actions-info.txt
-        echo "" >> github-actions-info.txt
-        echo "==== Memory Information ====" >> github-actions-info.txt
-        free -h >> github-actions-info.txt
-        echo "" >> github-actions-info.txt
-        echo "==== Disk Space Information ====" >> github-actions-info.txt
-        df -h >> github-actions-info.txt
-    - name: Upload system info file
-      uses: actions/upload-artifact@v3
-      with:
-        name: github-actions-info
-        path: github-actions-info.txt
+        echo "==== System Information ===="
+        uname -a
+        echo ""
+        echo "==== CPU Information ===="
+        lscpu
+        echo ""
+        echo "==== Memory Information ===="
+        free -h
+        echo ""
+        echo "==== Disk Space Information ===="
+        df -h
