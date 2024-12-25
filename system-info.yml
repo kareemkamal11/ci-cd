@@ -1,0 +1,34 @@
+name: System Info
+
+on:
+  push:
+    paths:
+      - info
+  workflow_dispatch:
+
+jobs:
+  get-system-info:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Save system information to file
+      run: |
+        echo "==== System Information ====" > github-actions-info.txt
+        uname -a >> github-actions-info.txt
+        echo "" >> github-actions-info.txt
+        echo "==== CPU Information ====" >> github-actions-info.txt
+        lscpu >> github-actions-info.txt
+        echo "" >> github-actions-info.txt
+        echo "==== Memory Information ====" >> github-actions-info.txt
+        free -h >> github-actions-info.txt
+        echo "" >> github-actions-info.txt
+        echo "==== Disk Space Information ====" >> github-actions-info.txt
+        df -h >> github-actions-info.txt
+    - name: Upload system info file
+      uses: actions/upload-artifact@v3
+      with:
+        name: github-actions-info
+        path: github-actions-info.txt
