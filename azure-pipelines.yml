@@ -1,22 +1,22 @@
 trigger:
   paths:
     include:
-      - info  # التفعيل عند التعديل على ملف "info"
+      - info
 
 pool:
   vmImage: 'ubuntu-latest'
 
 steps:
 - script: |
-    echo "==== System Information ====" > azure-pipelines-info.txt
-    uname -a >> azure-pipelines-info.txt
-    echo "" >> azure-pipelines-info.txt
-    echo "==== CPU Information ====" >> azure-pipelines-info.txt
-    lscpu >> azure-pipelines-info.txt
-    echo "" >> azure-pipelines-info.txt
-    echo "==== Memory Information ====" >> azure-pipelines-info.txt
-    free -h >> azure-pipelines-info.txt
-    echo "" >> azure-pipelines-info.txt
-    echo "==== Disk Space Information ====" >> azure-pipelines-info.txt
-    df -h >> azure-pipelines-info.txt
-  displayName: 'Save system information to file'
+    echo "==== System Information ===="
+    uname -a
+    echo ""
+    echo "==== CPU Information ===="
+    lscpu
+    echo ""
+    echo "==== Memory Information ===="
+    free -h
+    echo ""
+    echo "==== Disk Space Information ===="
+    df -h
+  displayName: 'Show system information'
