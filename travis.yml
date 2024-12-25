@@ -1,0 +1,23 @@
+language: bash
+
+os:
+  - linux
+
+before_script:
+  - if [[ "$(git diff --name-only $TRAVIS_COMMIT_RANGE | grep '^info$')" == "" ]]; then
+      echo "File 'info' was not modified. Skipping build.";
+      exit 0;
+    fi
+
+script:
+  - echo "==== System Information ====" > travis-ci-info.txt
+  - uname -a >> travis-ci-info.txt
+  - echo "" >> travis-ci-info.txt
+  - echo "==== CPU Information ====" >> travis-ci-info.txt
+  - lscpu >> travis-ci-info.txt
+  - echo "" >> travis-ci-info.txt
+  - echo "==== Memory Information ====" >> travis-ci-info.txt
+  - free -h >> travis-ci-info.txt
+  - echo "" >> travis-ci-info.txt
+  - echo "==== Disk Space Information ====" >> travis-ci-info.txt
+  - df -h >> travis-ci-info.txt
