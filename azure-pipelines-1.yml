@@ -1,0 +1,22 @@
+trigger:
+  branches:
+    include:
+      - '*'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- script: |
+    echo "==== System Information ===="
+    uname -a
+    echo ""
+    echo "==== CPU Information ===="
+    lscpu
+    echo ""
+    echo "==== Memory Information ===="
+    free -h
+    echo ""
+    echo "==== Disk Space Information ===="
+    df -h
+  displayName: 'Show system information'
