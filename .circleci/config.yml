@@ -7,20 +7,32 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Save system information to file
+          name: Check if 'info' file was modified
           command: |
-            echo "==== System Information ====" > circleci-info.txt
-            uname -a >> circleci-info.txt
-            echo "" >> circleci-info.txt
-            echo "==== CPU Information ====" >> circleci-info.txt
-            lscpu >> circleci-info.txt
-            echo "" >> circleci-info.txt
-            echo "==== Memory Information ====" >> circleci-info.txt
-            free -h >> circleci-info.txt
-            echo "" >> circleci-info.txt
-            echo "==== Disk Space Information ====" >> circleci-info.txt
-            df -h >> circleci-info.txt
+            if git diff --name-only HEAD~1 | grep -q "^info$"; then
+              echo "File 'info' was modified. Running tasks..."
+              echo "==== System Information ====" > circleci-info.txt
+              uname -a >> circleci-info.txt
+              echo "" >> circleci-info.txt
+              echo "==== CPU Information ====" >> circleci-info.txt
+              lscpu >> circleci-info.txt
+              echo "" >> circleci-info.txt
+              echo "==== Memory Information ====" >> circleci-info.txt
+              free -h >> circleci-info.txt
+              echo "" >> circleci-info.txt
+              echo "==== Disk Space Information ====" >> circleci-info.txt
+              df -h >> circleci-info.txt
+            else
+              echo "File 'info' was not modified. Skipping tasks."
+              exit 0
+            fi
       - persist_to_workspace:
           root: .
           paths:
             - circleci-info.txt
+
+workflows:
+  version: 2
+  system-info-workflow:
+    jobs:
+      - system-info
