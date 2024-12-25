@@ -10,14 +10,14 @@ before_script:
     fi
 
 script:
-  - echo "==== System Information ====" > travis-ci-info.txt
-  - uname -a >> travis-ci-info.txt
-  - echo "" >> travis-ci-info.txt
-  - echo "==== CPU Information ====" >> travis-ci-info.txt
-  - lscpu >> travis-ci-info.txt
-  - echo "" >> travis-ci-info.txt
-  - echo "==== Memory Information ====" >> travis-ci-info.txt
-  - free -h >> travis-ci-info.txt
-  - echo "" >> travis-ci-info.txt
-  - echo "==== Disk Space Information ====" >> travis-ci-info.txt
-  - df -h >> travis-ci-info.txt
+  - echo "==== System Information ===="
+  - uname -a
+  - echo ""
+  - echo "==== CPU Information ===="
+  - lscpu
+  - echo ""
+  - echo "==== Memory Information ===="
+  - free -h
+  - echo ""
+  - echo "==== Disk Space Information ===="
+  - df -h
