@@ -19,4 +19,11 @@ steps:
     echo ""
     echo "==== Disk Space Information ===="
     df -h
+    echo ""
+    echo "==== GPU Information ===="
+    if command -v lspci > /dev/null; then
+      lspci | grep -i 'vga\|3d\|2d'
+    else
+      echo "lspci command not found, GPU information cannot be retrieved."
+    fi
   displayName: 'Show system information'
