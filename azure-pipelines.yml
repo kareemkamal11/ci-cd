@@ -1,29 +1,23 @@
-trigger:
-  branches:
-    include:
-      - '*'
+name: Processor Info
 
-pool:
-  vmImage: 'ubuntu-latest'
+on:
+  push:
+    branches:
+      - main
 
-steps:
-- script: |
-    echo "==== System Information ===="
-    uname -a
-    echo ""
-    echo "==== CPU Information ===="
-    lscpu
-    echo ""
-    echo "==== Memory Information ===="
-    free -h
-    echo ""
-    echo "==== Disk Space Information ===="
-    df -h
-    echo ""
-    echo "==== GPU Information ===="
-    if command -v lspci > /dev/null; then
-      lspci | grep -i 'vga\|3d\|2d'
-    else
-      echo "lspci command not found, GPU information cannot be retrieved."
-    fi
-  displayName: 'Show system information'
+jobs:
+  processor-info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Display processor information
+        run: |
+          echo "Processor Information:"
+          lscpu
+
+      - name: Display number of cores
+        run: |
+          echo "Number of CPU Cores:"
+          grep -c ^processor /proc/cpuinfo
