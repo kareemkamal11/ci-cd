@@ -1,23 +1,15 @@
-name: Processor Info
+trigger:
+- main
 
-on:
-  push:
-    branches:
-      - main
+pool:
+  vmImage: 'windows-latest'
 
-jobs:
-  processor-info:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Display processor information
-        run: |
-          echo "Processor Information:"
-          lscpu
-
-      - name: Display number of cores
-        run: |
-          echo "Number of CPU Cores:"
-          grep -c ^processor /proc/cpuinfo
+steps:
+- powershell: |
+    Write-Host "Processor Information:"
+    Get-CimInstance Win32_Processor | Select-Object Name, NumberOfCores, NumberOfLogicalProcessors
+    Write-Host "Number of CPU Cores:"
+    (Get-CimInstance Win32_Processor).NumberOfCores
+    Write-Host "Number of Logical Processors:"
+    (Get-CimInstance Win32_Processor).NumberOfLogicalProcessors
+  displayName: 'Display Processor Info on Windows'
